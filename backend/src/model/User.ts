@@ -1,4 +1,4 @@
-import mongoose, { Document, Model, Schema } from 'mongoose'
+import mongoose, { AnyArray, ArrayExpression, Document, Model, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 const SALT_F = 10
@@ -6,6 +6,8 @@ const SALT_F = 10
 interface IUser extends Document {
     email: string
     password: string
+    role: number // 0:admin, 1:teacher, 2:student
+    courses: AnyArray<string> // kurzus nev??
     comparePwd: (cPass: string, callback: (error: Error | null, isMatch: boolean) => void) => void
 }
 
@@ -16,6 +18,14 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
     },
     password: {
         type: String,
+        required: true
+    },
+    role: {
+        type: Number,
+        required: true
+    },
+    courses: {
+        type: Array,
         required: true
     }
 })
