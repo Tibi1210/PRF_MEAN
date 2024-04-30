@@ -1,4 +1,4 @@
-import mongoose, { AnyArray, Document, Model, Schema } from 'mongoose'
+import mongoose, { AnyArray, Document, Mixed, Model, Mongoose, Schema } from 'mongoose'
 
 // nevet, leírást, ütemtervet, diákok limitjét, tanár nevét, státusz
 interface ICourse extends Document {
@@ -38,10 +38,11 @@ const CourseSchema: Schema<ICourse> = new mongoose.Schema({
     },
     students: {
         type: Array,
-        required: true
+        required: true,
+        default: [],
+
     }
 })
-
 
 export const Course: Model<ICourse> = mongoose.model<ICourse>("Course", CourseSchema)
 

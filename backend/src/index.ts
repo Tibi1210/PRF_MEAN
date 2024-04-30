@@ -8,7 +8,6 @@ import passport from 'passport'
 import { configurePassport } from './passports/passport'
 import mongoose from 'mongoose'
 
-
 const app = express()
 const port = 5000
 const dbUrl = 'mongodb://localhost:6000/my_db'

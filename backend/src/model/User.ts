@@ -1,4 +1,4 @@
-import mongoose, { AnyArray, ArrayExpression, Document, Model, Schema } from 'mongoose'
+import mongoose, { AnyArray, Document, Model, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 
 const SALT_F = 10
