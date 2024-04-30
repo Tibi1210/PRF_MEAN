@@ -1,0 +1,56 @@
+.signupDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signupForm{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 20px;
+    gap: 10px
+}
+
+.signupForm input{
+    padding: 5px;
+    border: 1xp solid #c9d1d9;
+    border-radius: 5px;
+
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+.signupForm .btnDiv{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.signupForm button{
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #c9d1d9;
+    width: 100%;
+
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+.signupForm button:hover{
+    background-color: #ffffff;
+}
+
+.signupForm .error{
+    padding: 1px;
+    gap: 1px;
+    line-height: 1;
+    color: #b81515;
+    font-size: 12px;
+}

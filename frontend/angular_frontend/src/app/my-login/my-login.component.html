@@ -1,0 +1,32 @@
+<div class="loginDiv">
+    <div>
+        <h1>503 Service Unavailable</h1>
+    </div>
+    <div>
+        <h2>Login</h2>
+    </div>
+    <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <input formControlName="email" type="email" placeholder="e-mail" required>
+        <div class="error" *ngIf="loginForm.get('email')?.errors && loginForm.get('email')?.touched">
+            <p *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.errors!['required']">Email required.</p>
+            <p *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.errors!['email']">Enter a valid email.</p>
+        </div>
+
+        <input formControlName="password" type="password" placeholder="password" required>
+        <div class="error" *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
+            <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.errors!['required']">Password required.</p>
+        </div>
+
+
+        <div class="btnDiv">
+            <button type="submit">Login</button>
+        </div>
+        <div class="btnDiv">
+            <button type="button">Sign Up</button>
+        </div>
+    </form>
+    <div>
+        <p>The true Neptun experience.</p>
+    </div>
+</div>

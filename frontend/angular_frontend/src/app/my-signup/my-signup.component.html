@@ -1,0 +1,45 @@
+<div class="signupDiv">
+    <div>
+        <h1>503 Service Unavailable</h1>
+    </div>
+    <div>
+        <h2>Sign Up</h2>
+    </div>
+    <form class="signupForm" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        
+        <input formControlName="name" type="text" placeholder="Neptun User" required>
+        <div class="error" *ngIf="signupForm.get('name')?.errors && signupForm.get('name')?.touched">
+            <p *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.errors!['required']">Name required.</p>
+        </div>
+
+
+        <input formControlName="email" type="email" placeholder="neptun@user.com" required>
+        <div class="error" *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.touched">
+            <p *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.errors!['required']">Email required.</p>
+            <p *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.errors!['email']">Enter a valid email.</p>
+        </div>
+
+        <input formControlName="password" type="password" placeholder="Password" required>
+        <div class="error" *ngIf="signupForm.get('password')?.errors && signupForm.get('password')?.touched">
+            <p *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.errors!['required']">Password required.</p>
+            <p *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.errors!['minlength']">Length must be at least 6.</p>
+        </div>
+
+        <input formControlName="confirmPassword" type="password" placeholder="Confirm Password" required>
+        <div class="error" *ngIf="signupForm.get('confirmPassword')?.errors && signupForm.get('confirmPassword')?.touched">
+            <p *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.errors!['required']">Password confirmation required.</p>
+            <p *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.errors!['mustMatch']">Passwords must match.</p>
+        </div>
+
+
+        <div class="btnDiv">
+            <button type="submit">Sign Up</button>
+        </div>
+        <div class="btnDiv">
+            <button type="button">Login instead</button>
+        </div>
+    </form>
+    <div>
+        <p>The true Neptun experience.</p>
+    </div>
+</div>

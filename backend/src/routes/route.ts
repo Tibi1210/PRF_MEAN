@@ -50,12 +50,13 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
     })
     
     router.post('/register', (req: Request, res: Response) => {
+        const name = req.body.name
         const email = req.body.email
         const password = req.body.password
         const role = 2
         const courses: Array<string> = ["Kurzus1","Kurzus2","Kurzus3"]
         
-        const user = new User({email: email, password: password, role: role, courses: courses})
+        const user = new User({name: name, email: email, password: password, role: role, courses: courses})
         user.save().then(data => {
             res.status(200).send(data)
         }).catch(err => {

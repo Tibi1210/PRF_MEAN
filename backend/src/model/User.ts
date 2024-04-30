@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 const SALT_F = 10
 
 interface IUser extends Document {
+    name: string
     email: string
     password: string
     role: number // 0:admin, 1:teacher, 2:student
@@ -12,6 +13,10 @@ interface IUser extends Document {
 }
 
 const UserSchema: Schema<IUser> = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
