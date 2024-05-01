@@ -21,15 +21,16 @@ mongoose.connect(dbUrl).then((data) => {
     return
 })
 
-const whitelist = ['http://localhost:4200'] 
-const corsOptions ={
+const whitelist = ['*', 'http://localhost:4200'] 
+const corsOptions = {
     origin: (origin: string | undefined, callback: (er: Error | null, allowed?: boolean) => void) =>{
-        if (whitelist.indexOf(origin!) !== -1) {
+        if (!origin || whitelist.indexOf(origin!) !== -1) {
             callback(null, true)
         }else{
             callback(new Error("Not allowed by CORS"))
         }
-    }
+    },
+    credentials: true
 }
 app.use(cors(corsOptions))
 

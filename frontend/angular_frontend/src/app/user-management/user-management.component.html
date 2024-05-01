@@ -1,0 +1,25 @@
+<div>
+    <table>
+        <thead>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Roadmap</th>
+            <th>Limit</th>
+            <th>Students</th>
+            <th>Teacher</th>
+            <th>active</th>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let course of courses">
+                <td>{{course.title}}</td>
+                <td>{{course.description}}</td>
+                <td>{{course.roadmap}}</td>
+                <td>{{course.limit}}</td>
+                <td>{{course.students}}</td>
+                <td>{{course.teacher}}</td>
+                <td>{{course.active}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

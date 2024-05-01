@@ -97,16 +97,21 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
     })
     
     router.post('/getEveryCourse', (req: Request, res: Response) => {
-        const query = Course.find()
-        query.then(course => {
-            if (course) {
-                res.status(200).send(course)
-            }else{
-                res.status(500).send("Internal server error")
-            }
-        }).catch(err =>{
-            res.status(500).send(err)
-        })
+        if (req.isAuthenticated()) {
+            const query = Course.find()
+            query.then(course => {
+                if (course) {
+                    res.status(200).send(course)
+                }else{
+                    res.status(500).send("Internal server error XDDDD")
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+        } else {
+            res.status(500).send('User is not logged in.')
+        }
+
     })
 
     router.post('/getUserCourses', (req: Request, res: Response) => {

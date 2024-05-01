@@ -30,6 +30,7 @@ export class MyLoginComponent implements OnInit{
         next: (data) => {
           if (data) {
             console.log(data);
+            this.navigate('/courses')
           }
           
         }, error: (err) =>{
