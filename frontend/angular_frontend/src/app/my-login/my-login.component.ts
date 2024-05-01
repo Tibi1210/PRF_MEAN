@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-login',
@@ -12,7 +13,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class MyLoginComponent implements OnInit{
   loginForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder){}
+  constructor(private formBuilder: FormBuilder, private router: Router){}
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -29,5 +30,10 @@ export class MyLoginComponent implements OnInit{
       console.log('Form is not valid.');
     }
   }
+
+  navigate(to: string){
+    this.router.navigateByUrl(to)
+  }
+
 
 }

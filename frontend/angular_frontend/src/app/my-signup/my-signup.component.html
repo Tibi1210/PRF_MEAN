@@ -7,25 +7,25 @@
     </div>
     <form class="signupForm" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         
-        <input formControlName="name" type="text" placeholder="Neptun User" required>
+        <input formControlName="name" type="text" placeholder="Neptun User" required [ngClass]="{'invalid-input': signupForm.get('name')?.errors && signupForm.get('name')?.touched}">
         <div class="error" *ngIf="signupForm.get('name')?.errors && signupForm.get('name')?.touched">
             <p *ngIf="signupForm.get('name')?.invalid && signupForm.get('name')?.errors!['required']">Name required.</p>
         </div>
 
 
-        <input formControlName="email" type="email" placeholder="neptun@user.com" required>
+        <input formControlName="email" type="email" placeholder="neptun@user.com" required [ngClass]="{'invalid-input': signupForm.get('email')?.errors && signupForm.get('email')?.touched}">
         <div class="error" *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.touched">
             <p *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.errors!['required']">Email required.</p>
             <p *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.errors!['email']">Enter a valid email.</p>
         </div>
 
-        <input formControlName="password" type="password" placeholder="Password" required>
+        <input formControlName="password" type="password" placeholder="Password" required [ngClass]="{'invalid-input': signupForm.get('password')?.errors && signupForm.get('password')?.touched}">
         <div class="error" *ngIf="signupForm.get('password')?.errors && signupForm.get('password')?.touched">
             <p *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.errors!['required']">Password required.</p>
             <p *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.errors!['minlength']">Length must be at least 6.</p>
         </div>
 
-        <input formControlName="confirmPassword" type="password" placeholder="Confirm Password" required>
+        <input formControlName="confirmPassword" type="password" placeholder="Confirm Password" required [ngClass]="{'invalid-input': signupForm.get('confirmPassword')?.errors && signupForm.get('confirmPassword')?.touched}">
         <div class="error" *ngIf="signupForm.get('confirmPassword')?.errors && signupForm.get('confirmPassword')?.touched">
             <p *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.errors!['required']">Password confirmation required.</p>
             <p *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.errors!['mustMatch']">Passwords must match.</p>
@@ -36,7 +36,7 @@
             <button type="submit">Sign Up</button>
         </div>
         <div class="btnDiv">
-            <button type="button">Login instead</button>
+            <button type="button" (click)="navigate('/login')">Login instead</button>
         </div>
     </form>
     <div>

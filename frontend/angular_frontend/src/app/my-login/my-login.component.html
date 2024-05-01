@@ -7,13 +7,13 @@
     </div>
     <form class="loginForm" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <input formControlName="email" type="email" placeholder="e-mail" required>
+        <input formControlName="email" type="email" placeholder="e-mail" required [ngClass]="{'invalid-input': loginForm.get('email')?.errors && loginForm.get('email')?.touched}">
         <div class="error" *ngIf="loginForm.get('email')?.errors && loginForm.get('email')?.touched">
             <p *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.errors!['required']">Email required.</p>
             <p *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.errors!['email']">Enter a valid email.</p>
         </div>
 
-        <input formControlName="password" type="password" placeholder="password" required>
+        <input formControlName="password" type="password" placeholder="password" required [ngClass]="{'invalid-input': loginForm.get('password')?.errors && loginForm.get('password')?.touched}">
         <div class="error" *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
             <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.errors!['required']">Password required.</p>
         </div>
@@ -23,7 +23,7 @@
             <button type="submit">Login</button>
         </div>
         <div class="btnDiv">
-            <button type="button">Sign Up</button>
+            <button type="button" (click)="navigate('/signup')">Sign Up</button>
         </div>
     </form>
     <div>
