@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-my-signup',
@@ -14,7 +15,7 @@ import { Router } from '@angular/router';
 export class MySignupComponent implements OnInit {
   signupForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private router: Router){}
+  constructor(private formBuilder: FormBuilder, private router: Router, private auth: AuthService){}
 
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
@@ -46,7 +47,22 @@ export class MySignupComponent implements OnInit {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      console.log('Form data:', this.signupForm.value);
+      this.auth.register(this.signupForm.value).subscribe({
+        next: (data) => {
+          if (data) {
+            console.log(data);
+          }
+          
+        }, error: (err) =>{
+          if (err) {
+            console.log(err);
+          }
+          
+        }
+
+      })
+
+
     } else {
       console.log('Form is not valid.');
     }
