@@ -1,4 +1,4 @@
-<div class="table-container" *ngIf="courses && courses.length; else noCourse">
+<div *ngIf="courses && courses.length; else noCourse">
     <table>
         <thead>
             <th>Title</th>
@@ -8,17 +8,21 @@
             <th>Students</th>
             <th>Teacher</th>
             <th>active</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </thead>
 
         <tbody>
             <tr *ngFor="let course of courses">
                 <td>{{course.title}}</td>
-                <td>{{course.description}}</td>
+                <td><div class="over">{{course.description}}</div></td>
                 <td>{{course.roadmap}}</td>
                 <td>{{course.limit}}</td>
-                <td>{{course.students}}</td>
+                <td><div class="over"><p *ngFor="let student of course.students">{{student}}</p></div></td>
                 <td>{{course.teacher}}</td>
                 <td>{{course.active}}</td>
+                <td><button class="editBtn" type="button" (click)="editCourse(course.title)">Edit</button></td>
+                <td><button class="deleteBtn" type="button" (click)="deleteCourse(course.title)">Delete</button></td>
             </tr>
         </tbody>
     </table>

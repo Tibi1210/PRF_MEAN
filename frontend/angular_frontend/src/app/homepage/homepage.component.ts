@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseListComponent } from '../course-list/course-list.component';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { GetDataService } from '../shared/services/get-data.service';
 
 @Component({
   selector: 'app-homepage',
@@ -14,14 +15,27 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit{
   searchForm!: FormGroup;
+  addCourse!: FormGroup;
+  editCourse!: FormGroup;
   courseFilter: string = ""
+  courseEdit: string = ""
+  newCourse: boolean = false
 
-  constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router){}
+  constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router, private dataServ: GetDataService){}
 
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
       searchVal: [''],
     })
+
+    this.addCourse = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      desc: [''],
+      roadmap: [''],
+      limit: ['', [Validators.required]],
+      teacher: ['', [Validators.required]],
+    })
+
   }
 
   changeView(){
@@ -46,8 +60,82 @@ export class HomepageComponent implements OnInit{
     })
   }
 
+  addCourseFn(){
+    if (this.addCourse.valid) {
+      this.dataServ.createCourse(this.addCourse.value['title'], this.addCourse.value['desc'], this.addCourse.value['roadmap'], this.addCourse.value['limit'], this.addCourse.value['teacher']).subscribe({
+        next: (data) => {
+          if (data) {
+            console.log(data);
+          }
+        }, error: (err) =>{
+          if (err) {
+            console.log(err);
+          }
+        }
+      })
+      this.router.navigateByUrl('/reload', { skipLocationChange: true }).then(() => {
+        this.router.navigateByUrl('/home');
+    }); 
+    } else {
+      console.log('Form is not valid.');
+    }
+
+  }
+
+  updateCourseFn(){
+    if (this.editCourse.valid) {
+      this.dataServ.updateCourse(this.editCourse.value['title'], this.editCourse.value['desc'], this.editCourse.value['roadmap'], this.editCourse.value['limit'], this.editCourse.value['teacher']).subscribe({
+        next: (data) => {
+          if (data) {
+            console.log(data);
+          }
+        }, error: (err) =>{
+          if (err) {
+            console.log(err);
+          }
+        }
+      })
+    }
+    this.courseEdit=""
+    this.router.navigateByUrl('/reload', { skipLocationChange: true }).then(() => {
+      this.router.navigateByUrl('/home');
+  }); 
+  }
 
   navigate(to: string){
     this.router.navigateByUrl(to)
+  }
+
+  courseToggle(){
+    this.newCourse=!this.newCourse
+  }
+
+  recieveOutput(event: string){
+    console.log(event);
+    if (this.courseEdit!==event) {
+      this.dataServ.getCourseByTitle(event).subscribe({
+        next: (data) => {
+          if (data) {
+            console.log(data[0]);
+            this.courseEdit = event
+            this.editCourse = this.formBuilder.group({
+              title: [data[0]['title'], [Validators.required]],
+              desc: [data[0]['description']],
+              roadmap: [data[0]['roadmap']],
+              limit: [data[0]['limit'], [Validators.required]],
+              teacher: [data[0]['teacher'], [Validators.required]],
+            })
+          }
+        }, error: (err) =>{
+          if (err) {
+            console.log(err);
+          }
+        }
+      })
+      
+    }else{
+      this.courseEdit=""
+    }
+
   }
 }

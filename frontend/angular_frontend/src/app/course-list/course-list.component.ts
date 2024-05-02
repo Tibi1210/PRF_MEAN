@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Course } from '../shared/model/Course';
 import { GetDataService } from '../shared/services/get-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-list',
@@ -12,10 +13,12 @@ import { GetDataService } from '../shared/services/get-data.service';
 })
 export class CourseListComponent implements OnChanges {
   @Input() filter?: string
+  @Output() editActive = new EventEmitter<string>()
 
   courses?: Course[]
 
-  constructor(private getData: GetDataService){}
+  constructor(private getData: GetDataService, private router: Router){}
+
 
   ngOnChanges(){
     if (this.filter === "") {
@@ -43,5 +46,25 @@ export class CourseListComponent implements OnChanges {
         }
       })
     }
+  }
+
+  editCourse(title: string){
+    this.editActive.emit(title)
+  }
+  deleteCourse(title: string){
+    this.getData.deleteCourseByTitle(title).subscribe({
+      next: (data) => {
+        if (data) {
+          console.log(data);
+          this.router.navigateByUrl('/reload', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl('/home');
+        });   
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
   }
 }

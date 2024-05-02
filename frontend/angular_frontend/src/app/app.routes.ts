@@ -21,6 +21,11 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
+        path: 'reload',
+        loadComponent: () => import('./reload/reload.component').then((c) => c.ReloadComponent),
+        canActivate: [authGuard]
+    },
+    {
         path: '**', 
         redirectTo: 'login',
     },

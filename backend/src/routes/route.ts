@@ -88,20 +88,24 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
     
     
     router.post('/newCourse', (req: Request, res: Response) => {
-        const title = req.body.title
-        const desc = req.body.description
-        const rm = req.body.roadmap
-        const lim = req.body.limit
-        const stud: Array<string> = []
-        const teacher = req.body.teacher
-        const active = 0
-        
-        const course = new Course({title: title, description: desc, roadmap: rm, limit: lim, students: stud, teacher: teacher, active: active})
-        course.save().then(data => {
-            res.status(200).send(data)
-        }).catch(err => {
-            res.status(500).send(err)
-        })
+        if (req.isAuthenticated()) {
+            const title = req.body.title
+            const desc = req.body.description
+            const rm = req.body.roadmap
+            const lim = req.body.limit
+            const stud: Array<string> = []
+            const teacher = req.body.teacher
+            const active = 0
+            
+            const course = new Course({title: title, description: desc, roadmap: rm, limit: lim, students: stud, teacher: teacher, active: active})
+            course.save().then(data => {
+                res.status(200).send(data)
+            }).catch(err => {
+                res.status(500).send(err)
+            })
+        } else {
+            res.status(500).send('User is not logged in.')
+        }
     })
     
     router.post('/getEveryCourse', (req: Request, res: Response) => {
@@ -160,6 +164,24 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         }
     })
 
+    router.post('/deleteCourseByTitle', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            const title = req.body.title
+            const query = Course.deleteOne({title: title})
+            query.then(course => {
+                if (course) {
+                    res.status(200).send("Deleted!")
+                }else{
+                    res.status(500).send("Internal server error.")
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+        } else {
+            res.status(500).send('User is not logged in.')
+        }
+    })
+
     router.post('/addStudentToCourse', (req: Request, res: Response) => {
         const title = req.body.title
         let student = [req.body.student]
@@ -195,6 +217,38 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         }).catch(err =>{
             res.status(500).send(err);
         })
+    })
+
+
+    router.post('/updateCourse', (req: Request, res: Response) => {
+        const title = req.body.title
+        const desc = req.body.description
+        const rm = req.body.roadmap
+        const lim = req.body.limit
+        const teacher = req.body.teacher
+
+        const result = Course.updateOne(
+            { title: title },
+            {
+            $set: {
+                title: title,
+                description: desc,
+                roadmap: rm,
+                limit: lim,
+                teacher: teacher
+            },
+            });
+
+        result.then(course => {
+                if (course) {
+                    res.status(200).send(`Courses matched: ${course.matchedCount}\n Courses updated: ${course.modifiedCount}`)
+                }else{
+                    res.status(500).send("No course named UPDATE: "+title)
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+
     })
 
     

@@ -1,0 +1,94 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.top{
+    display: flex;
+    width: 100%;
+}
+
+.searchBar{
+    display: flex;
+    width: 100%;
+}
+
+.title{
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    width: 100%;
+}
+
+.logout{
+    display: flex;
+    flex-direction:row;
+    align-items:flex-end;
+}
+
+.table{
+    width: 100%;
+}
+
+button{
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #c9d1d9;
+
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+button:hover{
+    background-color: #ffffff;
+}
+
+input{
+    padding: 5px;
+    border: 1xp solid #c9d1d9;
+    border-radius: 5px;
+
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+
+.addForm{
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    gap: 10px
+}
+
+.addForm input{
+    padding: 5px;
+    border: 1xp solid #c9d1d9;
+    border-radius: 5px;
+
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+.addForm .error{
+    padding: 1px;
+    gap: 1px;
+    line-height: 1;
+    color: #b81515;
+    font-size: 12px;
+}
+
+.invalid-input{
+    border-color: #b81515 !important;
+    border-width: 3px !important;
+    background-color: #b88888;
+}
+
+.newCourse{
+    margin: 20px;
+}

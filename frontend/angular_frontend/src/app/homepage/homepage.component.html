@@ -1,9 +1,68 @@
+<div class="content">
+    <div class="top">
+        <div class="title">
+            <h1>Neptun</h1>
+        </div>
+        <div class="logout">
+            <button type="button" (click)="logoutBtn()">Logout</button>
+        </div>
+    </div>
+    <div>
+        <div class="searchBar">
+            <form  [formGroup]="searchForm" (ngSubmit)="changeView()">
+                <input formControlName="searchVal" placeholder="Course Title" type="text">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="table">
+            <app-course-list [filter]="courseFilter" (editActive)="recieveOutput($event)"></app-course-list>
+        </div>
+        <div>
+            <button type="button" (click)="courseToggle()">Create new</button>
+        </div>
+    </div>
+    <div>
+        <div class="newCourse" *ngIf="newCourse">
+            <h2>Create Course</h2>
+            <form class="addForm" [formGroup]="addCourse" (ngSubmit)="addCourseFn()">
+                <input formControlName="title" type="text" placeholder="Title" required [ngClass]="{'invalid-input': addCourse.get('title')?.errors && addCourse.get('title')?.touched}">
+                <div class="error" *ngIf="addCourse.get('title')?.errors && addCourse.get('title')?.touched">
+                    <p *ngIf="addCourse.get('title')?.invalid && addCourse.get('title')?.errors!['required']">Title required.</p>
+                </div>
 
-<button type="button" (click)="logoutBtn()">LOGOUT</button>
+                <input formControlName="desc" type="text" placeholder="Description">
+                <input formControlName="roadmap" type="text" placeholder="Roadmap">
 
+                <input formControlName="limit" type="number" placeholder="Limit" required [ngClass]="{'invalid-input': addCourse.get('limit')?.errors && addCourse.get('limit')?.touched}">
+                <div class="error" *ngIf="addCourse.get('limit')?.errors && addCourse.get('limit')?.touched">
+                    <p *ngIf="addCourse.get('limit')?.invalid && addCourse.get('limit')?.errors!['required']">Limit required.</p>
+                </div>
 
-<form class="loginForm" [formGroup]="searchForm" (ngSubmit)="changeView()">
-    <input formControlName="searchVal" type="text">
-    <button type="submit">Search</button>
-</form>
-<app-course-list [filter]="courseFilter"></app-course-list>
+                <input formControlName="teacher" type="text" placeholder="Teacher" required [ngClass]="{'invalid-input': addCourse.get('teacher')?.errors && addCourse.get('teacher')?.touched}">
+                <div class="error" *ngIf="addCourse.get('teacher')?.errors && addCourse.get('teacher')?.touched">
+                    <p *ngIf="addCourse.get('teacher')?.invalid && addCourse.get('teacher')?.errors!['required']">Teacher required.</p>
+                </div>
+                <button type="submit">Create</button>
+            </form>
+        </div>
+        <div class="newCourse" *ngIf="courseEdit!==''">
+            <h2>Edit {{courseEdit}} Course</h2>
+            <form class="addForm" [formGroup]="editCourse" (ngSubmit)="updateCourseFn()">
+                <input formControlName="desc" type="text" placeholder="Description">
+                <input formControlName="roadmap" type="text" placeholder="Roadmap">
+
+                <input formControlName="limit" type="number" placeholder="Limit" required [ngClass]="{'invalid-input': addCourse.get('limit')?.errors && addCourse.get('limit')?.touched}">
+                <div class="error" *ngIf="addCourse.get('limit')?.errors && (addCourse.get('limit')?.dirty || addCourse.get('limit')?.touched)">
+                    <p *ngIf="addCourse.get('limit')?.invalid && addCourse.get('limit')?.errors!['required']">Limit required.</p>
+                </div>
+
+                <input formControlName="teacher" type="text" placeholder="Teacher" required [ngClass]="{'invalid-input': addCourse.get('teacher')?.errors && addCourse.get('teacher')?.touched}">
+                <div class="error" *ngIf="addCourse.get('teacher')?.errors && (addCourse.get('teacher')?.dirty || addCourse.get('teacher')?.touched)">
+                    <p *ngIf="addCourse.get('teacher')?.invalid && addCourse.get('teacher')?.errors!['required']">Teacher required.</p>
+                </div>
+                <button type="submit">Edit</button>
+            </form>
+        </div>
+    </div>
+
+</div>
