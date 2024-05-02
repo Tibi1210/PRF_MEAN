@@ -8,7 +8,7 @@
             <th>Joined</th>
             <th>Students</th>
             <th>Teacher</th>
-            <th>active</th>
+            <th *ngIf="user?.role!==2">active</th>
             <th *ngIf="user?.role!==2">Edit</th>
             <th *ngIf="user?.role!==2">Delete</th>
             <th *ngIf="user?.role!==2">Activate</th>
@@ -16,7 +16,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let course of courses">
+            <tr *ngFor="let course of courses" >
                 <td>{{course.title}}</td>
                 <td><div class="over">{{course.description}}</div></td>
                 <td>{{course.roadmap}}</td>
@@ -24,17 +24,23 @@
                 <td>{{course.students.length}}</td>
                 <td><div class="over"><p *ngFor="let student of course.students">{{student}}</p></div></td>
                 <td>{{course.teacher}}</td>
-                <td>{{course.active}}</td>
-                <td *ngIf="user?.role===0 || user?.name===course.teacher"><button class="editBtn" type="button" (click)="editCourse(course.title)">Edit</button></td>
-                <td *ngIf="user?.role===0 || user?.name===course.teacher"><button class="deleteBtn" type="button" (click)="deleteCourse(course.title)">Delete</button></td>
-                <td *ngIf="user?.role===0"><button class="activateBtn" type="button" (click)="activateCourse(course.title)">Activate</button></td>
-                <td *ngIf="user?.role===2 && !course.students.includes(user?.name!) && course.limit>course.students.length"><button class="activateBtn" type="button" (click)="joinCourse(course.title)">Join</button></td>
-                <td *ngIf="user?.role===2 && course.students.includes(user?.name!) "><button class="activateBtn" type="button" (click)="leaveCourse(course.title)">Leave</button></td>
+                <td *ngIf="user?.role!==2">{{course.active}}</td>
+                <td *ngIf="user?.role===0 || user?.name===course.teacher"><div class="tableBtn"><button class="editBtn" type="button" (click)="editCourse(course.title)">Edit</button></div></td>
+                <td *ngIf="user?.role===0 || user?.name===course.teacher"><div class="tableBtn"><button class="deleteBtn" type="button" (click)="deleteCourse(course.title)">Delete</button></div></td>
+                <td *ngIf="user?.role===0 && !course.active"><div class="tableBtn"><button class="activateBtn" type="button" (click)="activateCourse(course.title)">Activate</button></div></td>
+                <td *ngIf="user?.role===2 && !course.students.includes(user?.name!) && course.limit>course.students.length"><div class="tableBtn"><button class="activateBtn" type="button" (click)="joinCourse(course.title)">Join</button></div></td>
+                <td *ngIf="user?.role===2 && course.students.includes(user?.name!) "><div class="tableBtn"><button class="leaveBtn" type="button" (click)="leaveCourse(course.title)">Leave</button></div></td>
             </tr>
         </tbody>
     </table>
+    <div>
+        <button *ngIf="user?.role===2" type="button" (click)="joinedToggle()">My courses</button>
+    </div>
 </div>
 
 <ng-template #noCourse>
     <p>No course exists with that name.</p>
+    <div>
+        <button *ngIf="user?.role===2" type="button" (click)="joinedToggle()">My courses</button>
+    </div>
 </ng-template>

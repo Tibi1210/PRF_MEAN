@@ -22,6 +22,7 @@ export class HomepageComponent implements OnInit{
   courseEdit: string = ""
   newCourse: boolean = false
   user: User | undefined = undefined
+  joinedOnly:boolean=false
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router, private dataServ: GetDataService){}
 
@@ -124,6 +125,7 @@ export class HomepageComponent implements OnInit{
       })
     }
   }
+
 
   recieveOutput(event: string){
     if (this.courseEdit!==event) {

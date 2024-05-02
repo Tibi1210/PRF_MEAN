@@ -16,8 +16,9 @@ export class CourseListComponent implements OnChanges {
   @Input() filter?: string
   @Input() user?: User
   @Output() editActive = new EventEmitter<string>()
-
+  
   courses?: Course[]
+  joinedOnly: boolean = false
 
   constructor(private getData: GetDataService, private router: Router){}
 
@@ -25,57 +26,87 @@ export class CourseListComponent implements OnChanges {
   ngOnChanges(){
     if (this.user?.role===2) {
       if (this.filter === "") {
-        this.getData.listActiveCourses().subscribe({
-          next: (data) => {
-            if (data) {
-              this.courses = data            
-            }
-          }, error: (err) =>{
-            if (err) {
-              console.log(err);
-            }
-          }
-        })
+        this.listActiveCourses()
       }else{
-        this.getData.getActiveCourseByTitle(this.filter!).subscribe({
-          next: (data) => {
-            if (data) {
-              this.courses = data
-            }
-          }, error: (err) =>{
-            if (err) {
-              console.log(err);
-            }
-          }
-        })
+        this.getActiveCourseByTitle()
       }
     }else{
       if (this.filter === "") {
-        this.getData.listAllCourses().subscribe({
-          next: (data) => {
-            if (data) {
-              this.courses = data            
-            }
-          }, error: (err) =>{
-            if (err) {
-              console.log(err);
-            }
-          }
-        })
+        this.listAllCourses()
       }else{
-        this.getData.getCourseByTitle(this.filter!).subscribe({
-          next: (data) => {
-            if (data) {
-              this.courses = data
-            }
-          }, error: (err) =>{
-            if (err) {
-              console.log(err);
-            }
-          }
-        })
+        this.getCourseByTitle()
       }
     }
+  }
+
+  getCourseByTitle(){
+    this.getData.getCourseByTitle(this.filter!).subscribe({
+      next: (data) => {
+        if (data) {
+          this.courses = data
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  listAllCourses(){
+    this.getData.listAllCourses().subscribe({
+      next: (data) => {
+        if (data) {
+          this.courses = data            
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  getActiveCourseByTitle(){
+    this.getData.getActiveCourseByTitle(this.filter!).subscribe({
+      next: (data) => {
+        if (data) {
+          this.courses = data
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  listActiveCourses(){
+    this.getData.listActiveCourses().subscribe({
+      next: (data) => {
+        if (data) {
+          this.courses = data            
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  joinedCoursesonly(){
+    this.getData.getJoinedCourses(this.user?.name!).subscribe({
+      next: (data) => {
+        if (data) {
+          this.courses = data            
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
   }
 
   editCourse(title: string){
@@ -147,5 +178,14 @@ export class CourseListComponent implements OnChanges {
         }
       }
     })
+  }
+
+  joinedToggle(){
+    if (!this.joinedOnly) {
+      this.joinedCoursesonly()
+    }else{
+      this.listActiveCourses()
+    }
+    this.joinedOnly=!this.joinedOnly
   }
 }

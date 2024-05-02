@@ -24,7 +24,7 @@
             <app-course-list [filter]="courseFilter" [user]="user" (editActive)="recieveOutput($event)"></app-course-list>
         </div>
         <div>
-            <button type="button" (click)="courseToggle()">Create new</button>
+            <button *ngIf="user?.role!==2" type="button" (click)="courseToggle()">Create new</button>
         </div>
     </div>
     <div>

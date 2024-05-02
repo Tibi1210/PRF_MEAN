@@ -56,9 +56,25 @@ tr:nth-child(even){
     cursor: pointer;
     border: none;
     border-radius: 5px;
-    background-color: #901fa7;
+    background-color: #d270e6;
     color: #0d1117;
     font-size: 14px;
     line-height: 1.5;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.leaveBtn{
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #9e54ad;
+    color: #0d1117;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.tableBtn{
+    display: flex;
+    flex-direction: column;
 }

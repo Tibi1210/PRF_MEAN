@@ -48,6 +48,16 @@ export class GetDataService {
     return this.http.post<Course[]>('http://localhost:5000/app/getActiveCourseByTitle', body, {headers: header, withCredentials: true});
   }
 
+  getJoinedCourses(name: string) {
+    const header = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    const body = new URLSearchParams();
+    body.set('name', name)
+
+    return this.http.post<Course[]>('http://localhost:5000/app/getUserCourses', body, {headers: header, withCredentials: true});
+  }
+
   
   getCurrentUser() {
     const header = new HttpHeaders({
