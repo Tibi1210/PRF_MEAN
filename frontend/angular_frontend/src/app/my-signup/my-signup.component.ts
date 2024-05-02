@@ -51,6 +51,7 @@ export class MySignupComponent implements OnInit {
         next: (data) => {
           if (data) {
             console.log(data);
+            this.navigate('/login')
           }
           
         }, error: (err) =>{

@@ -8,8 +8,10 @@
             <th>Students</th>
             <th>Teacher</th>
             <th>active</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th *ngIf="user?.role!==2">Edit</th>
+            <th *ngIf="user?.role!==2">Delete</th>
+            <th *ngIf="user?.role!==2">Activate</th>
+            <th *ngIf="user?.role===2">Join</th>
         </thead>
 
         <tbody>
@@ -21,8 +23,11 @@
                 <td><div class="over"><p *ngFor="let student of course.students">{{student}}</p></div></td>
                 <td>{{course.teacher}}</td>
                 <td>{{course.active}}</td>
-                <td><button class="editBtn" type="button" (click)="editCourse(course.title)">Edit</button></td>
-                <td><button class="deleteBtn" type="button" (click)="deleteCourse(course.title)">Delete</button></td>
+                <td *ngIf="user?.role===0 || user?.name===course.teacher"><button class="editBtn" type="button" (click)="editCourse(course.title)">Edit</button></td>
+                <td *ngIf="user?.role===0 || user?.name===course.teacher"><button class="deleteBtn" type="button" (click)="deleteCourse(course.title)">Delete</button></td>
+                <td *ngIf="user?.role===0"><button class="activateBtn" type="button" (click)="activateCourse(course.title)">Activate</button></td>
+                <td *ngIf="user?.role===2 && !course.students.includes(user?.name!) "><button class="activateBtn" type="button" (click)="joinCourse(course.title)">Join</button></td>
+                <td *ngIf="user?.role===2 && course.students.includes(user?.name!) "><button class="activateBtn" type="button" (click)="leaveCourse(course.title)">Leave</button></td>
             </tr>
         </tbody>
     </table>

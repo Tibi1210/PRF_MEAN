@@ -86,6 +86,13 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         }
     })
     
+    router.post('/currentUser', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            res.status(200).send(req.user)
+        } else {
+            res.status(500).send(false)
+        }
+    })
     
     router.post('/newCourse', (req: Request, res: Response) => {
         if (req.isAuthenticated()) {
@@ -153,6 +160,41 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
             query.then(course => {
                 if (course) {
                     res.status(200).send([course])
+                }else{
+                    res.status(200).send([])
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+        } else {
+            res.status(500).send('User is not logged in.')
+        }
+    })
+
+    router.post('/getActiveCourseByTitle', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            const title = req.body.title
+            const query = Course.findOne({title: title, active: 1})
+            query.then(course => {
+                if (course) {
+                    res.status(200).send([course])
+                }else{
+                    res.status(200).send([])
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+        } else {
+            res.status(500).send('User is not logged in.')
+        }
+    })
+
+    router.post('/getActiveCourses', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            const query = Course.find({active: 1})
+            query.then(course => {
+                if (course) {
+                    res.status(200).send(course)
                 }else{
                     res.status(200).send([])
                 }
@@ -236,6 +278,28 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
                 roadmap: rm,
                 limit: lim,
                 teacher: teacher
+            },
+            });
+
+        result.then(course => {
+                if (course) {
+                    res.status(200).send(`Courses matched: ${course.matchedCount}\n Courses updated: ${course.modifiedCount}`)
+                }else{
+                    res.status(500).send("No course named UPDATE: "+title)
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+
+    })
+
+    router.post('/setActive', (req: Request, res: Response) => {
+        const title = req.body.title
+        const result = Course.updateOne(
+            { title: title },
+            {
+            $set: {
+                active: 1,
             },
             });
 

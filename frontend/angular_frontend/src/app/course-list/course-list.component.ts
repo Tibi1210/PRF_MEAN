@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { Course } from '../shared/model/Course';
 import { GetDataService } from '../shared/services/get-data.service';
 import { Router } from '@angular/router';
+import { User } from '../shared/model/User';
 
 @Component({
   selector: 'app-course-list',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class CourseListComponent implements OnChanges {
   @Input() filter?: string
+  @Input() user?: User
   @Output() editActive = new EventEmitter<string>()
 
   courses?: Course[]
@@ -21,30 +23,58 @@ export class CourseListComponent implements OnChanges {
 
 
   ngOnChanges(){
-    if (this.filter === "") {
-      this.getData.listAllCourses().subscribe({
-        next: (data) => {
-          if (data) {
-            this.courses = data            
+    if (this.user?.role===2) {
+      if (this.filter === "") {
+        this.getData.listActiveCourses().subscribe({
+          next: (data) => {
+            if (data) {
+              this.courses = data            
+            }
+          }, error: (err) =>{
+            if (err) {
+              console.log(err);
+            }
           }
-        }, error: (err) =>{
-          if (err) {
-            console.log(err);
+        })
+      }else{
+        this.getData.getActiveCourseByTitle(this.filter!).subscribe({
+          next: (data) => {
+            if (data) {
+              this.courses = data
+            }
+          }, error: (err) =>{
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      })
+        })
+      }
     }else{
-      this.getData.getCourseByTitle(this.filter!).subscribe({
-        next: (data) => {
-          if (data) {
-            this.courses = data
+      if (this.filter === "") {
+        this.getData.listAllCourses().subscribe({
+          next: (data) => {
+            if (data) {
+              this.courses = data            
+            }
+          }, error: (err) =>{
+            if (err) {
+              console.log(err);
+            }
           }
-        }, error: (err) =>{
-          if (err) {
-            console.log(err);
+        })
+      }else{
+        this.getData.getCourseByTitle(this.filter!).subscribe({
+          next: (data) => {
+            if (data) {
+              this.courses = data
+            }
+          }, error: (err) =>{
+            if (err) {
+              console.log(err);
+            }
           }
-        }
-      })
+        })
+      }
     }
   }
 
@@ -53,6 +83,57 @@ export class CourseListComponent implements OnChanges {
   }
   deleteCourse(title: string){
     this.getData.deleteCourseByTitle(title).subscribe({
+      next: (data) => {
+        if (data) {
+          console.log(data);
+          this.router.navigateByUrl('/reload', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl('/home');
+        });   
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  activateCourse(title: string){
+    this.getData.setActive(title).subscribe({
+      next: (data) => {
+        if (data) {
+          console.log(data);
+          this.router.navigateByUrl('/reload', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl('/home');
+        });   
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  joinCourse(title: string){
+    this.getData.joinCourse(title, this.user?.name!).subscribe({
+      next: (data) => {
+        if (data) {
+          console.log(data);
+          this.router.navigateByUrl('/reload', { skipLocationChange: true }).then(() => {
+            this.router.navigateByUrl('/home');
+        });   
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        }
+      }
+    })
+  }
+
+  leaveCourse(title: string){
+    this.getData.leaveCourse(title, this.user?.name!).subscribe({
       next: (data) => {
         if (data) {
           console.log(data);

@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
 import { GetDataService } from '../shared/services/get-data.service';
+import { User } from '../shared/model/User';
 
 @Component({
   selector: 'app-homepage',
@@ -20,6 +21,7 @@ export class HomepageComponent implements OnInit{
   courseFilter: string = ""
   courseEdit: string = ""
   newCourse: boolean = false
+  user: User | undefined = undefined
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService, private router: Router, private dataServ: GetDataService){}
 
@@ -27,14 +29,18 @@ export class HomepageComponent implements OnInit{
     this.searchForm = this.formBuilder.group({
       searchVal: [''],
     })
-
-    this.addCourse = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      desc: [''],
-      roadmap: [''],
-      limit: ['', [Validators.required]],
-      teacher: ['', [Validators.required]],
+    this.dataServ.getCurrentUser().subscribe({
+      next: (data) => {
+        if (data) {
+          this.user = data
+        }
+      }, error: (err) =>{
+        if (err) {
+          console.log(err);
+        } 
+      }
     })
+
 
   }
 
@@ -84,7 +90,7 @@ export class HomepageComponent implements OnInit{
 
   updateCourseFn(){
     if (this.editCourse.valid) {
-      this.dataServ.updateCourse(this.editCourse.value['title'], this.editCourse.value['desc'], this.editCourse.value['roadmap'], this.editCourse.value['limit'], this.editCourse.value['teacher']).subscribe({
+      this.dataServ.updateCourse(this.courseEdit, this.editCourse.value['desc'], this.editCourse.value['roadmap'], this.editCourse.value['limit'], this.editCourse.value['teacher']).subscribe({
         next: (data) => {
           if (data) {
             console.log(data);
@@ -108,18 +114,26 @@ export class HomepageComponent implements OnInit{
 
   courseToggle(){
     this.newCourse=!this.newCourse
+    if (this.newCourse) {
+      this.addCourse = this.formBuilder.group({
+        title: ['', [Validators.required]],
+        desc: [''],
+        roadmap: [''],
+        limit: ['', [Validators.required]],
+        teacher: ['', [Validators.required]],
+      })
+    }
   }
 
   recieveOutput(event: string){
-    console.log(event);
     if (this.courseEdit!==event) {
       this.dataServ.getCourseByTitle(event).subscribe({
         next: (data) => {
           if (data) {
             console.log(data[0]);
+
             this.courseEdit = event
             this.editCourse = this.formBuilder.group({
-              title: [data[0]['title'], [Validators.required]],
               desc: [data[0]['description']],
               roadmap: [data[0]['roadmap']],
               limit: [data[0]['limit'], [Validators.required]],
