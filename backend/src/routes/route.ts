@@ -235,23 +235,28 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
                 course.students.forEach(element => {
                     student.push(element)
                 });
-                const result = Course.updateOne(
-                    { title: title },
-                    {
-                    $set: {
-                        students: student,
-                    },
-                    });
+                if (student.length<=course.limit) {
+                    const result = Course.updateOne(
+                        { title: title },
+                        {
+                        $set: {
+                            students: student,
+                        },
+                        });
+    
+                    result.then(course => {
+                            if (course) {
+                                res.status(200).send(`Courses matched: ${course.matchedCount}\n Courses updated: ${course.modifiedCount}`)
+                            }else{
+                                res.status(500).send("No course named UPDATE: "+title)
+                            }
+                        }).catch(err =>{
+                            res.status(500).send(err)
+                        })
+                }else{
+                    res.status(500).send("Course full.")
+                }
 
-                result.then(course => {
-                        if (course) {
-                            res.status(200).send(`Courses matched: ${course.matchedCount}\n Courses updated: ${course.modifiedCount}`)
-                        }else{
-                            res.status(500).send("No course named UPDATE: "+title)
-                        }
-                    }).catch(err =>{
-                        res.status(500).send(err)
-                    })
                 
             }else{
                 res.status(500).send("No course named FIND: "+title)
