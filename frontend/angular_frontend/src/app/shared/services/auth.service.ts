@@ -38,4 +38,8 @@ export class AuthService {
     return this.http.post('http://localhost:5000/app/register', body, {headers: headers})
   }
 
+  logout(){   
+        return this.http.post('http://localhost:5000/app/logout', {}, {withCredentials: true, responseType: 'text'});
+  }
+
 }

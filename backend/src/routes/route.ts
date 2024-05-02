@@ -135,17 +135,21 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
     })
 
     router.post('/getCourseByTitle', (req: Request, res: Response) => {
-        const title = req.body.title
-        const query = Course.findOne({title: title})
-        query.then(course => {
-            if (course) {
-                res.status(200).send(course)
-            }else{
-                res.status(500).send("No course named: "+title)
-            }
-        }).catch(err =>{
-            res.status(500).send(err)
-        })
+        if (req.isAuthenticated()) {
+            const title = req.body.title
+            const query = Course.findOne({title: title})
+            query.then(course => {
+                if (course) {
+                    res.status(200).send([course])
+                }else{
+                    res.status(200).send([])
+                }
+            }).catch(err =>{
+                res.status(500).send(err)
+            })
+        } else {
+            res.status(500).send('User is not logged in.')
+        }
     })
 
     router.post('/addStudentToCourse', (req: Request, res: Response) => {

@@ -1,4 +1,4 @@
-<div>
+<div class="table-container" *ngIf="courses && courses.length; else noCourse">
     <table>
         <thead>
             <th>Title</th>
@@ -23,3 +23,7 @@
         </tbody>
     </table>
 </div>
+
+<ng-template #noCourse>
+    <p>No course exists with that name.</p>
+</ng-template>

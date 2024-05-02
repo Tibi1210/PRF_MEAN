@@ -17,4 +17,14 @@ export class GetDataService {
 
     return this.http.post<Course[]>('http://localhost:5000/app/getEveryCourse', body, {headers: header, withCredentials: true});
   }
+
+  getCourseByTitle(title: string) {
+    const header = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
+    const body = new URLSearchParams();
+    body.set('title', title)
+
+    return this.http.post<Course[]>('http://localhost:5000/app/getCourseByTitle', body, {headers: header, withCredentials: true});
+  }
 }
