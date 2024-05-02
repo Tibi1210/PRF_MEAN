@@ -42,4 +42,8 @@ export class AuthService {
         return this.http.post('http://localhost:5000/app/logout', {}, {withCredentials: true, responseType: 'text'});
   }
 
+  checkAuth(){
+    return this.http.post<boolean>('http://localhost:5000/app/auth', {}, {withCredentials: true});
+  }
+
 }

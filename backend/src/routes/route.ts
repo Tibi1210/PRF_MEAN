@@ -77,6 +77,14 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
             res.status(500).send('User is not logged in.')
         }
     })
+
+    router.post('/auth', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            res.status(200).send(true)
+        } else {
+            res.status(500).send(false)
+        }
+    })
     
     
     router.post('/newCourse', (req: Request, res: Response) => {
