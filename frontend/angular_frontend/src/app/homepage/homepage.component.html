@@ -62,7 +62,7 @@
                     <p *ngIf="editCourse.get('limit')?.invalid && editCourse.get('limit')?.errors!['required']">Limit required.</p>
                 </div>
 
-                <input formControlName="teacher" type="text" placeholder="Teacher" required [ngClass]="{'invalid-input': editCourse.get('teacher')?.errors && editCourse.get('teacher')?.touched}">
+                <input formControlName="teacher" type="text" placeholder="Teacher" required [ngClass]="{'invalid-input': editCourse.get('teacher')?.errors && editCourse.get('teacher')?.touched}" *ngIf="user?.role==0">
                 <div class="error" *ngIf="editCourse.get('teacher')?.errors && (editCourse.get('teacher')?.dirty || editCourse.get('teacher')?.touched)">
                     <p *ngIf="editCourse.get('teacher')?.invalid && editCourse.get('teacher')?.errors!['required']">Teacher required.</p>
                 </div>
