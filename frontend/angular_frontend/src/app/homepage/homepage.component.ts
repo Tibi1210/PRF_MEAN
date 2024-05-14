@@ -69,6 +69,9 @@ export class HomepageComponent implements OnInit{
 
   addCourseFn(){
     if (this.addCourse.valid) {
+      if (this.addCourse.value['teacher'] == "") {
+        this.addCourse.value['teacher'] = this.user?.name
+      }
       this.dataServ.createCourse(this.addCourse.value['title'], this.addCourse.value['desc'], this.addCourse.value['roadmap'], this.addCourse.value['limit'], this.addCourse.value['teacher']).subscribe({
         next: (data) => {
           if (data) {
@@ -121,7 +124,7 @@ export class HomepageComponent implements OnInit{
         desc: [''],
         roadmap: [''],
         limit: ['', [Validators.required]],
-        teacher: ['', [Validators.required]],
+        teacher: [''],
       })
     }
   }
